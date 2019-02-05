@@ -2,15 +2,7 @@ package com.hookgabr;
 
 public class BuffSpell extends Spell {
 
-    private int buff = 0;
-
-    public int getBuff() {
-        return buff;
-    }
-
-    public void setBuff(int buff) {
-        this.buff = buff;
-    }
+    public int buff = 0;
 
     public BuffSpell() { }
 

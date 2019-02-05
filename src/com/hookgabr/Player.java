@@ -58,17 +58,17 @@ public class Player extends Character {
     public void equipWeapon(Weapon weapon) {
         equippedWeapon = weapon;
         statAttack.val = statBaseAttack.val + weapon.getDamageRating();
-        System.out.println("\n--------------------\nEQUIPPED " + weapon.name + " ATTACK + " + weapon.getDamageRating() + "\n--------------------");
+        System.out.println("--------------------\nEQUIPPED " + weapon.name + " ATTACK + " + weapon.getDamageRating() + "\n--------------------");
     }
 
     public void equipArmor(Armor armor) {
         equippedArmor = armor;
         statDefense.val = statBaseDefense.val + armor.getDefenseRating();
-        System.out.println("\n--------------------\nEQUIPPED " + armor.name + " DEFENSE + " + armor.getDefenseRating() + "\n--------------------");
+        System.out.println("--------------------\nEQUIPPED " + armor.name + " DEFENSE + " + armor.getDefenseRating() + "\n--------------------");
     }
 
     public void printSpellList() {
-        System.out.println("\nSPELLS:\n--------------------");
+        System.out.println("SPELLS:\n--------------------");
         for (int i = 0; i < spellList.size(); i++) {
             String spells = String.format("%d: %s", i + 1, spellList.get(i).name);
             System.out.println(spells);

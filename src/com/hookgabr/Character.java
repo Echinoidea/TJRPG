@@ -108,28 +108,29 @@ public abstract class Character {
 
     public void attack(Character target) {
         target.statHp.val -= statAttack.val;
-        System.out.println("\n$$$$$$$$$$$$$$$$$$$$$\nDEALT " + statAttack.val + " DAMAGE TO " + target.name +
-                "\n$$$$$$$$$$$$$$$$$$$$$\n");
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$\nDEALT " + statAttack.val + " DAMAGE TO " + target.name +
+                "\n$$$$$$$$$$$$$$$$$$$$$");
     }
 
     public void castDamageSpell(DamageSpell spell, Character target) {
         if (this.canCast(spell)) {
             target.statHp.val -= spell.damage;
-            System.out.println("\n$$$$$$$$$$$$$$$$$$$$$\nDEALT " + spell.damage + " SPELL DAMAGE TO " + target.name +
-                    "\n$$$$$$$$$$$$$$$$$$$$$\n");
+            System.out.println("$$$$$$$$$$$$$$$$$$$$$\nDEALT " + spell.damage + " SPELL DAMAGE TO " + target.name +
+                    "\n$$$$$$$$$$$$$$$$$$$$$");
         }
     }
 
     public void castHealingSpell(HealingSpell spell, Character target) {
         if (this.canCast(spell)) {
             target.statHp.val += spell.healing;
-            System.out.println("\n$$$$$$$$$$$$$$$$$$$$$\nHEALED " + target.name + " BY " + spell.healing + " POINTS" +
-                    "\n$$$$$$$$$$$$$$$$$$$$$\n");
+            System.out.println("$$$$$$$$$$$$$$$$$$$$$\nHEALED " + target.name + " BY " + spell.healing + " POINTS" +
+                    "\n$$$$$$$$$$$$$$$$$$$$$");
         }
     }
 
     public void printStats() {
-        String stats = String.format("\n%s's STATS:\n--------------------\nLVL: %d\nHP: %d\nMP: %d\nSTR: %d\nWIS: %d\nEND: %d\nDEX: %d\nLUC: %d\nATK: %d\nDEF: %d\n--------------------",
+        String stats = String.format("%s's STATS:\n--------------------\nLVL: %d\nHP: %d\nMP: %d\nSTR: %d\nWIS:" +
+                        " %d\nEND: %d\nDEX: %d\nLUC: %d\nATK: %d\nDEF: %d\n--------------------",
                 name, level, statHp.val, statMp.val, statStr.val, statWis.val,
                 statEnd.val, statDex.val, statLuc.val, statAttack.val, statDefense.val);
         System.out.println(stats);
