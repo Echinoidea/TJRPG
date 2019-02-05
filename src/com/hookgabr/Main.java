@@ -14,17 +14,12 @@ public class Main {
         Armor iron = new Armor("iron armor", 10, 2);
         hero1.itemList.add(sword);
         hero1.itemList.add(iron);
-        hero1.printItemList();
         DamageSpell fireball = new DamageSpell("fireball", 3, 5);
         HealingSpell heal = new HealingSpell("heal", 4, 3);
         BuffSpell bulk = new BuffSpell("bulk", 3, 2);
         hero1.spellList.add(fireball);
         hero1.spellList.add(heal);
         hero1.spellList.add(bulk);
-        hero1.equipWeapon(sword);
-        hero1.equipArmor(iron);
-        hero1.printStats();
-        hero1.printSpellList();
         Monster slime = new Monster("Slime", 1, 3, 2, 5);
         Battle battle = new Battle(hero1, slime);
     }

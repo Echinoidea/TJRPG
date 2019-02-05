@@ -15,8 +15,7 @@ public class Battle {
         this.player = player;
         this.monster = monster;
 
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$\nBATTLE STARTED BETWEEN " + player.name + " AND " + monster.name +
-                "\n$$$$$$$$$$$$$$$$$$$$$");
+        System.out.println("\n> Battle started between " + player.name + " and " + monster.name + "!");
 
         startBattleLoop();
     }
@@ -42,15 +41,14 @@ public class Battle {
                     case "1":
                         player.attack(monster);
                         if (monster.isDead()) {
-                            System.out.println("$$$$$$$$$$$$$$$$$$$$$\nDEFEATED " + monster.name +
-                                    "\n$$$$$$$$$$$$$$$$$$$$$");
+                            System.out.println("\n> You defeated " + monster.name + "!");
                         }
                         break;
                     case "MELEE":
                         player.attack(monster);
                         if (monster.isDead()) {
-                            System.out.println("$$$$$$$$$$$$$$$$$$$$$\nDEFEATED " + monster.name +
-                                    "\n$$$$$$$$$$$$$$$$$$$$$");
+                            System.out.println("\n> You defeated " + monster.name + "!");
+                            isRunning = false;
                             break;
                         }
                         break;
@@ -79,28 +77,33 @@ public class Battle {
                         }
                         break;
                     default:
-                        System.out.println("INVALID INPUT");
+                        System.out.println("\n> INVALID INPUT");
                         continue;
                 }
 
                 isPlayerTurn = false;
-                isRunning = false;
             }
             else {
-                System.out.println("$$$$$$$$$$$$$$$$$$$$$\n" + monster.name + "'s TURN\n$$$$$$$$$$$$$$$$$$$$$");
-                monsterAttack();
-                isPlayerTurn = true;
+                if (!monster.isDead()) {
+                    System.out.println("\n> " + monster.name + "'s turn.");
+                    monsterAttack();
+                    System.out.println("\n> Press Enter");
+                    scan.nextLine();
+                    isPlayerTurn = true;
+                } else {
+                    break;
+                }
             }
-            //scan.nextLine();
         }
         scan.close();
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$\nBATTLE OVER\n$$$$$$$$$$$$$$$$$$$$$");
+        isRunning = false;
+        System.out.println("\n// BATTLE OVER");
     }
 
     private void displayBattleMenu() {
-        String battleMenu = "####################\nHP: " + player.statHp.val + "\nMP: "
-                + player.statMp.val + "\n--------------------\n1: MELEE\n2: SPELLS\n3: ITEMS\n4: FLEE" +
-                "\n####################";
+        String battleMenu = "\n/-/-/-/-/-/-/-/-/-/\nHP: " + player.statHp.val + "\nMP: "
+                + player.statMp.val + "\n--------------------\n1: MELEE\n2: SPELLS\n" +
+                "3: ITEMS\n4: FLEE\n/-/-/-/-/-/-/-/-/-/";
         System.out.println(battleMenu);
     }
 
@@ -119,7 +122,7 @@ public class Battle {
                         }
                     }
                     if (hSpell != null && monster.canCast(hSpell)) {
-                        System.out.println("$$$$$$$$$$$$$$$$$$$$$\n" + monster.name + "CASTED " + hSpell.name + "\n$$$$$$$$$$$$$$$$$$$$$");
+                        System.out.println("\n> " + monster.name + " casts " + hSpell.name + "!");
                         monster.castHealingSpell(hSpell, monster);
                     }
                 } else if (monster.spellList.contains(DamageSpell.class)) {
@@ -131,14 +134,14 @@ public class Battle {
                         }
                     }
                     if (dSpell != null && monster.canCast(dSpell)) {
-                        System.out.println("$$$$$$$$$$$$$$$$$$$$$\n" + monster.name + "CASTED " + dSpell.name + "\n$$$$$$$$$$$$$$$$$$$$$");
+                        System.out.println("> " + monster.name + "casts " + dSpell.name + "!");
                         monster.castDamageSpell(dSpell, monster);
                         isRunning = !player.isDead() && !monster.isDead();
                     }
                 }
             }
             if (player.level > monster.level + 5 && rNum >= 40) {
-                System.out.println("$$$$$$$$$$$$$$$$$$$$$\nTHE MONSTER FLED\n$$$$$$$$$$$$$$$$$$$$$");
+                System.out.println("\n> " + monster.name + "fled!");
                 isRunning = false;
             } else {
                 monster.attack(player);

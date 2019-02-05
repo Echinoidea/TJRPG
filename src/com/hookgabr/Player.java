@@ -30,24 +30,8 @@ public class Player extends Character {
         return exp >= expToLevel;
     }
 
-    public void addItem(Item item) {
-        itemList.add(item);
-        System.out.println("DEBUG: ADDED " + item.name);
-    }
-
-    public void removeItem(int index) {
-        itemList.remove(index);
-        System.out.println("DEBUG: REMOVED ALL ITEMS");
-    }
-
-    public void removeAllItems() {
-        for (int i = 0; i < itemList.size() - 1; i++) {
-            itemList.remove(i);
-        }
-    }
-
     public void printItemList() {
-        System.out.println("--------------------\nITEMS:");
+        System.out.println("\n--------------------\n> Items:");
         for (int i = 0; i < itemList.size(); i++) {
             String items = String.format("%d: %s", i + 1, itemList.get(i).name);
             System.out.println(items);
@@ -58,17 +42,17 @@ public class Player extends Character {
     public void equipWeapon(Weapon weapon) {
         equippedWeapon = weapon;
         statAttack.val = statBaseAttack.val + weapon.getDamageRating();
-        System.out.println("--------------------\nEQUIPPED " + weapon.name + " ATTACK + " + weapon.getDamageRating() + "\n--------------------");
+        System.out.println("\n> Equipped " + weapon.name + ".");
     }
 
     public void equipArmor(Armor armor) {
         equippedArmor = armor;
         statDefense.val = statBaseDefense.val + armor.getDefenseRating();
-        System.out.println("--------------------\nEQUIPPED " + armor.name + " DEFENSE + " + armor.getDefenseRating() + "\n--------------------");
+        System.out.println("\n> Equipped " + armor.name + ".");
     }
 
     public void printSpellList() {
-        System.out.println("SPELLS:\n--------------------");
+        System.out.println("\n--------------------\n> Spells:");
         for (int i = 0; i < spellList.size(); i++) {
             String spells = String.format("%d: %s", i + 1, spellList.get(i).name);
             System.out.println(spells);

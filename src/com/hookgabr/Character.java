@@ -92,48 +92,49 @@ public abstract class Character {
 
     public void healHp(int hp) {
         statHp.val += hp;
-        System.out.println("HEALED HP BY " + hp + " POINTS");
+        System.out.println("\n> Healed HP by " + hp + " points.");
     }
 
     public void healMp(int mp) {
         statMp.val += mp;
-        System.out.println("HEALED MP BY " + mp + " POINTS");
+        System.out.println("\n> Healed MP by " + mp + " points.");
     }
 
     public void healFull() {
         statHp.val = statHp.max;
         statMp.val = statMp.max;
-        System.out.println("DEBUG: FULLY RESTORED HP AND MP");
+        System.out.println("\n> Fully restored HP and MP.");
     }
 
     public void attack(Character target) {
         target.statHp.val -= statAttack.val;
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$\nDEALT " + statAttack.val + " DAMAGE TO " + target.name +
-                "\n$$$$$$$$$$$$$$$$$$$$$");
+        System.out.println("\n> " + this.name + " dealt " + statAttack.val + " damage to " + target.name + ".");
     }
 
     public void castDamageSpell(DamageSpell spell, Character target) {
         if (this.canCast(spell)) {
             target.statHp.val -= spell.damage;
-            System.out.println("$$$$$$$$$$$$$$$$$$$$$\nDEALT " + spell.damage + " SPELL DAMAGE TO " + target.name +
-                    "\n$$$$$$$$$$$$$$$$$$$$$");
+            System.out.println("\n> " + this.name + " dealt " + spell.damage + " spell damage to " + target.name + ".");
         }
     }
 
     public void castHealingSpell(HealingSpell spell, Character target) {
         if (this.canCast(spell)) {
             target.statHp.val += spell.healing;
-            System.out.println("$$$$$$$$$$$$$$$$$$$$$\nHEALED " + target.name + " BY " + spell.healing + " POINTS" +
-                    "\n$$$$$$$$$$$$$$$$$$$$$");
+            System.out.println("\n> Healed " + target.name + " by " + spell.healing + " points.");
         }
     }
 
     public void printStats() {
-        String stats = String.format("%s's STATS:\n--------------------\nLVL: %d\nHP: %d\nMP: %d\nSTR: %d\nWIS:" +
-                        " %d\nEND: %d\nDEX: %d\nLUC: %d\nATK: %d\nDEF: %d\n--------------------",
+        /*String stats = String.format("\n%s's Stats:\n--------------------\nLevel: %d\nHP: %d\nMP: %d\nStrength: %d\nWisdom:" +
+                        " %d\nEndurance: %d\nDexterity: %d\nLuck: %d\nAttack: %d\nDefense: %d\n--------------------",
                 name, level, statHp.val, statMp.val, statStr.val, statWis.val,
                 statEnd.val, statDex.val, statLuc.val, statAttack.val, statDefense.val);
-        System.out.println(stats);
+        System.out.println(stats);*/
+        System.out.printf("\n%s's Stats:\n--------------------\nLevel: %d\nHP: %d\nMP: %d\nStrength: %d\nWisdom:" +
+                        " %d\nEndurance: %d\nDexterity: %d\nLuck: %d\nAttack: %d\nDefense: %d\n--------------------\n",
+                name, level, statHp.val, statMp.val, statStr.val, statWis.val,
+                statEnd.val, statDex.val, statLuc.val, statAttack.val, statDefense.val);
     }
 
     public boolean canCast(Spell spell) {
