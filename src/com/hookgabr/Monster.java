@@ -8,7 +8,7 @@ public class Monster extends Character {
 
     public Monster(String name, int level, int expYield, int goldYield, int lootChance) {
         this.name = name;
-        rollStats();
+        rollAllStats();
 
         this.expYield = expYield;
         this.goldYeild = goldYield;

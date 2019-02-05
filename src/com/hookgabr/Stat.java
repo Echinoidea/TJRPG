@@ -12,9 +12,9 @@ public class Stat {
 
     public void addVal() {
         Random rand = new Random();
-        int rVal = rand.nextInt(5);
-        if (this.val + rVal > max) {
-            this.val = max;
+        int rVal = rand.nextInt(5) + 2;
+        if (this.val + rVal > 100) {
+            this.val = 100;
         }
         else {
             this.val += rVal;

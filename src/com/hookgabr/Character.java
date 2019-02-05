@@ -27,20 +27,21 @@ public abstract class Character {
     public Stat statDefense = new Stat("Defense", 0);
 
     public Stat statDodge = new Stat("Dodge Chance", 0);
-    public Stat statCrit = new Stat("Critical Hit Chance", 0);
+    public Stat statCritical = new Stat("Critical Hit Chance", 0);
 
     public Weapon equippedWeapon = new Weapon("fists", 0, 1);
     public Armor equippedArmor = new Armor("unarmored", 0, 0);
 
     public List<Spell> spellList = new ArrayList<Spell>();
 
-    public void rollStats() {
-        Random rand = new Random();
-        statStr.max = (int)Math.pow(rand.nextInt(6), (1 + ((float)level / 10))) + level;
-        statWis.max = (int)Math.pow(rand.nextInt(6), (1 + ((float)level / 10))) + level;
-        statEnd.max = (int)Math.pow(rand.nextInt(6), (1 + ((float)level / 10))) + level;
-        statDex.max = (int)Math.pow(rand.nextInt(6), (1 + ((float)level / 10))) + level;
-        statLuc.max = (int)Math.pow(rand.nextInt(6), (1 + ((float)level / 10))) + level;
+    void rollAllStats() {
+        Random r = new Random();
+
+        statStr.max = r.nextInt(6) + 12;
+        statWis.max = r.nextInt(6) + 12;
+        statEnd.max = r.nextInt(6) + 12;
+        statDex.max = r.nextInt(6) + 12;
+        statLuc.max = r.nextInt(6) + 12;
 
         statStr.val = statStr.max;
         statWis.val = statWis.max;
@@ -48,11 +49,11 @@ public abstract class Character {
         statDex.val = statDex.max;
         statLuc.val = statLuc.max;
 
-        statHp.max = statEnd.val * 2 + rand.nextInt(5);
-        statMp.max = (int)(statWis.val * 1.5 + rand.nextInt(3));
+        statHp.max = (int)(statEnd.val * 1.5 + r.nextInt(5));
+        statMp.max = statWis.val / 2 + r.nextInt(3);
 
         statHp.val = statHp.max;
-        statHp.val = statHp.max;
+        statMp.val = statMp.max;
 
         statBaseAttack.max = statStr.val / 2 + 1;
         statBaseDefense.max = statDex.val / 4 + 1;
@@ -61,17 +62,17 @@ public abstract class Character {
 
         statBaseAttack.val = statBaseAttack.max;
         statBaseDefense.val = statBaseDefense.max;
-        statAttack.val = statBaseAttack.max;
-        statAttack.val = statBaseAttack.max;
+        statAttack.val = statBaseAttack.max + equippedWeapon.damageRating;
+        statDefense.val = statBaseDefense.max + equippedArmor.defenseRating;
 
-        statDodge.val = (int)Math.pow(statDex.val, (float)statDex.val / 10);
-        statCrit.val = (int)Math.pow(statLuc.val, (float)statLuc.val / 10);
+        statDodge.max = (int)Math.pow(statDex.val, (float)statDex.val / 40);
+        statCritical.max = (int)Math.pow(statLuc.val, (float)statLuc.val / 40);
 
         statDodge.val = statDodge.max;
-        statCrit.val = statCrit.max;
+        statCritical.val = statCritical.max;
     }
 
-    public void levelUp() {
+    void levelUp() {
         Random rand = new Random();
         level++;
 
@@ -84,10 +85,15 @@ public abstract class Character {
         statHp.max = statEnd.val * 2 + rand.nextInt(5);
         statMp.max = (int)(statWis.val * 1.5 + rand.nextInt(3));
 
-        statBaseAttack.max = statStr.val / 2;
-        statBaseAttack.max = statDex.val / 5;
+        statBaseAttack.max = statStr.val / 2 + 1;
+        statBaseDefense.max = statDex.val / 4 + 1;
         statAttack.max = statBaseAttack.val;
         statDefense.max = statBaseDefense.val;
+
+        statBaseAttack.val = statBaseAttack.max;
+        statBaseDefense.val = statBaseDefense.max;
+        statAttack.val = statBaseAttack.max + equippedWeapon.damageRating;
+        statDefense.val = statBaseDefense.max + equippedArmor.defenseRating;
     }
 
     public void healHp(int hp) {
@@ -100,32 +106,34 @@ public abstract class Character {
         System.out.println("\n> Healed MP by " + mp + " points.");
     }
 
-    public void healFull() {
+    void healFull() {
         statHp.val = statHp.max;
         statMp.val = statMp.max;
         System.out.println("\n> Fully restored HP and MP.");
     }
 
-    public void attack(Character target) {
-        target.statHp.val -= statAttack.val;
-        System.out.println("\n> " + this.name + " dealt " + statAttack.val + " damage to " + target.name + ".");
+    void attack(Character target) {
+        Random r = new Random();
+        int a = statAttack.val + r.nextInt(3);
+        target.statHp.val -= a;
+        System.out.println("\n> " + this.name + " dealt " + a + " damage to " + target.name + ".");
     }
 
-    public void castDamageSpell(DamageSpell spell, Character target) {
+    void castDamageSpell(DamageSpell spell, Character target) {
         if (this.canCast(spell)) {
             target.statHp.val -= spell.damage;
             System.out.println("\n> " + this.name + " dealt " + spell.damage + " spell damage to " + target.name + ".");
         }
     }
 
-    public void castHealingSpell(HealingSpell spell, Character target) {
+    void castHealingSpell(HealingSpell spell, Character target) {
         if (this.canCast(spell)) {
             target.statHp.val += spell.healing;
             System.out.println("\n> Healed " + target.name + " by " + spell.healing + " points.");
         }
     }
 
-    public void printStats() {
+    void printStats() {
         /*String stats = String.format("\n%s's Stats:\n--------------------\nLevel: %d\nHP: %d\nMP: %d\nStrength: %d\nWisdom:" +
                         " %d\nEndurance: %d\nDexterity: %d\nLuck: %d\nAttack: %d\nDefense: %d\n--------------------",
                 name, level, statHp.val, statMp.val, statStr.val, statWis.val,

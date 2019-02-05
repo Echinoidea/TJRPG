@@ -15,14 +15,13 @@ public class Player extends Character {
     public Player(String name, int level) {
         Random rand = new Random();
         this.name = name;
-        rollStats();
+        rollAllStats();
         gold = rand.nextInt(11 * 10);
         for (int i = 1; i < level; i++) {
             levelUp();
         }
 
         healFull();
-
         printStats();
     }
 
@@ -47,7 +46,7 @@ public class Player extends Character {
 
     public void equipArmor(Armor armor) {
         equippedArmor = armor;
-        statDefense.val = statBaseDefense.val + armor.getDefenseRating();
+        statDefense.val = statBaseDefense.val + armor.defenseRating;
         System.out.println("\n> Equipped " + armor.name + ".");
     }
 

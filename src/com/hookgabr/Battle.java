@@ -4,14 +4,10 @@ import java.util.*;
 
 public class Battle {
 
-    public Player player;
-    public Monster monster;
+    private Player player;
+    private Monster monster;
 
-    private boolean isPlayerTurn = true;
-
-    public Battle() { }
-
-    public Battle(Player player, Monster monster) {
+    Battle(Player player, Monster monster) {
         this.player = player;
         this.monster = monster;
 
@@ -22,7 +18,8 @@ public class Battle {
 
     private boolean isRunning = true;
 
-    public void startBattleLoop() {
+    private void startBattleLoop() {
+        boolean isPlayerTurn = true;
         Scanner scan = new Scanner(System.in);
         //Random r = new Random();
 
@@ -41,15 +38,13 @@ public class Battle {
                     case "1":
                         player.attack(monster);
                         if (monster.isDead()) {
-                            System.out.println("\n> You defeated " + monster.name + "!");
+                            defeatMonster();
                         }
                         break;
                     case "MELEE":
                         player.attack(monster);
                         if (monster.isDead()) {
-                            System.out.println("\n> You defeated " + monster.name + "!");
-                            isRunning = false;
-                            break;
+                            defeatMonster();
                         }
                         break;
                     case "2":
@@ -125,7 +120,8 @@ public class Battle {
                         System.out.println("\n> " + monster.name + " casts " + hSpell.name + "!");
                         monster.castHealingSpell(hSpell, monster);
                     }
-                } else if (monster.spellList.contains(DamageSpell.class)) {
+                }
+                else if (monster.spellList.contains(DamageSpell.class)) {
                     DamageSpell dSpell = null;
                     for (Spell s : monster.spellList) {
                         if (s.getClass() == DamageSpell.class) {
@@ -148,8 +144,36 @@ public class Battle {
                 isRunning = !player.isDead() && !monster.isDead();
             }
         }
+        if (player.isDead()) {
+            loseBattle();
+        }
+    }
+
+    private void defeatMonster() {
+        System.out.println("\n> You defeated " + monster.name + "!");
+        player.exp += monster.expYield;
+        player.gold += monster.goldYeild;
+        if (player.canLevelUp()) {
+            player.levelUp();
+            System.out.println("\n> You leveled up!");
+            player.printStats();
+        }
+        System.out.printf("\n> You earned %d EXP and found %d gold!", monster.expYield, monster.goldYeild);
+
+        /*Random r = new Random();
+        int rNum = r.nextInt(100);
+        if (rNum >= monster.lootChance) {
+            // TODO: Give leveled item?
+        }
+        */
+        // Return to the Arena
+    }
+
+    private void loseBattle() {
+        System.out.println("\n> You were defeated and lost half of your gold.");
+        player.gold -= player.gold / 2;
+        // Return to the Arena
     }
 }
-// TODO: Give rewards for defeating Monster
 // TODO: Game over stuff
 // TODO: Continue to "arena" after battle
