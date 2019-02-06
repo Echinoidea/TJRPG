@@ -20,7 +20,8 @@ public class Main {
         hero1.spellList.add(fireball);
         hero1.spellList.add(heal);
         hero1.spellList.add(bulk);
-        Monster slime = new Monster("Slime", 1, 3, 2, 5);
+        Monster slime = new Monster("Slime", 3, 3, 2, 5);
+        slime.spellList.add(fireball);
         Battle battle = new Battle(hero1, slime);
     }
 }

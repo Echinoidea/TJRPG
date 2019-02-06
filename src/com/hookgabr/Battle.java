@@ -11,7 +11,7 @@ public class Battle {
         this.player = player;
         this.monster = monster;
 
-        System.out.println("\n> Battle started between " + player.name + " and " + monster.name + "!");
+        Game.slowPrint("\n> Battle started between " + player.name + " and " + monster.name + "!");
 
         startBattleLoop();
     }
@@ -102,40 +102,58 @@ public class Battle {
         System.out.println(battleMenu);
     }
 
+    private HealingSpell checkForHealingSpell(List<Spell> spellList) {
+        boolean containsHealingSpell = false;
+        HealingSpell hSpell = null;
+        if (!spellList.isEmpty()) {
+            for (Spell s : spellList) {
+                if (s instanceof HealingSpell) {
+                    containsHealingSpell = true;
+                    hSpell = (HealingSpell) s;
+                }
+            }
+        }
+        else {
+            containsHealingSpell = false;
+        }
+        return hSpell;
+    }
+
+    private DamageSpell checkForDamageSpell(List<Spell> spellList) {
+        boolean containsDamageSpell = false;
+        DamageSpell dSpell = null;
+        if (!spellList.isEmpty()) {
+            for (Spell s : spellList) {
+                if (s instanceof DamageSpell) {
+                    containsDamageSpell = true;
+                    dSpell = (DamageSpell) s;
+                }
+            }
+        }
+        else {
+            containsDamageSpell = false;
+        }
+        return dSpell;
+    }
+
     private void monsterAttack() {
         isRunning = !player.isDead() && !monster.isDead();
         Random r = new Random();
         int rNum = r.nextInt(100);
         if (!monster.isDead()) {
-            if (rNum >= 60) {
-                if (monster.statHp.val < monster.statHp.val / 2 && monster.spellList.contains(HealingSpell.class)) {
-                    HealingSpell hSpell = null;
-                    for (Spell s : monster.spellList) {
-                        if (s.getClass() == HealingSpell.class) {
-                            hSpell = (HealingSpell) s;
-                            break;
-                        }
-                    }
-                    if (hSpell != null && monster.canCast(hSpell)) {
-                        System.out.println("\n> " + monster.name + " casts " + hSpell.name + "!");
-                        monster.castHealingSpell(hSpell, monster);
-                    }
+            if (rNum >= 50) {
+                if (monster.statHp.val < monster.statHp.val / 2 && monster.spellList.contains(checkForHealingSpell(monster.spellList))) {
+                    HealingSpell hSpell;
+                    System.out.println("\n> " + monster.name + " casts " + checkForHealingSpell(monster.spellList).name + "!");
+                    monster.castHealingSpell(checkForHealingSpell(monster.spellList), monster);
                 }
-                else if (monster.spellList.contains(DamageSpell.class)) {
-                    DamageSpell dSpell = null;
-                    for (Spell s : monster.spellList) {
-                        if (s.getClass() == DamageSpell.class) {
-                            dSpell = (DamageSpell) s;
-                            break;
-                        }
-                    }
-                    if (dSpell != null && monster.canCast(dSpell)) {
-                        System.out.println("> " + monster.name + "casts " + dSpell.name + "!");
-                        monster.castDamageSpell(dSpell, monster);
-                        isRunning = !player.isDead() && !monster.isDead();
-                    }
+                else if (monster.spellList.contains(checkForDamageSpell(monster.spellList))) {
+                    HealingSpell dSpell;
+                    System.out.println("\n> " + monster.name + " casts " + checkForDamageSpell(monster.spellList).name + "!");
+                    monster.castDamageSpell(checkForDamageSpell(monster.spellList), monster);
                 }
             }
+
             if (player.level > monster.level + 5 && rNum >= 40) {
                 System.out.println("\n> " + monster.name + "fled!");
                 isRunning = false;
@@ -144,6 +162,7 @@ public class Battle {
                 isRunning = !player.isDead() && !monster.isDead();
             }
         }
+
         if (player.isDead()) {
             loseBattle();
         }

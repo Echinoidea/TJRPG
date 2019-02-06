@@ -134,11 +134,6 @@ public abstract class Character {
     }
 
     void printStats() {
-        /*String stats = String.format("\n%s's Stats:\n--------------------\nLevel: %d\nHP: %d\nMP: %d\nStrength: %d\nWisdom:" +
-                        " %d\nEndurance: %d\nDexterity: %d\nLuck: %d\nAttack: %d\nDefense: %d\n--------------------",
-                name, level, statHp.val, statMp.val, statStr.val, statWis.val,
-                statEnd.val, statDex.val, statLuc.val, statAttack.val, statDefense.val);
-        System.out.println(stats);*/
         System.out.printf("\n%s's Stats:\n--------------------\nLevel: %d\nHP: %d\nMP: %d\nStrength: %d\nWisdom:" +
                         " %d\nEndurance: %d\nDexterity: %d\nLuck: %d\nAttack: %d\nDefense: %d\n--------------------\n",
                 name, level, statHp.val, statMp.val, statStr.val, statWis.val,
