@@ -4,15 +4,13 @@ import java.util.*;
 
 public class Player extends Character {
 
-    public int exp = 0;
-    public int expToLevel = 0;
-    public int gold = 0;
+    int exp = 0;
+    private int expToLevel = 0;
+    int gold;
 
-    public List<Item> itemList = new ArrayList<Item>();
+    List<Item> itemList = new ArrayList<Item>();
 
-    public Player() { }
-
-    public Player(String name, int level) {
+    Player(String name, int level) {
         Random rand = new Random();
         this.name = name;
         rollAllStats();
@@ -25,11 +23,11 @@ public class Player extends Character {
         printStats();
     }
 
-    public boolean canLevelUp() {
+    boolean canLevelUp() {
         return exp >= expToLevel;
     }
 
-    public void printItemList() {
+    void printItemList() {
         System.out.println("\n--------------------\n> Items:");
         for (int i = 0; i < itemList.size(); i++) {
             String items = String.format("%d: %s", i + 1, itemList.get(i).name);
@@ -50,7 +48,7 @@ public class Player extends Character {
         System.out.println("\n> Equipped " + armor.name + ".");
     }
 
-    public void printSpellList() {
+    void printSpellList() {
         System.out.println("\n--------------------\n> Spells:");
         for (int i = 0; i < spellList.size(); i++) {
             String spells = String.format("%d: %s", i + 1, spellList.get(i).name);

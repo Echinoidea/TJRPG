@@ -2,11 +2,11 @@ package com.hookgabr;
 
 public class Monster extends Character {
 
-    public int expYield = 0;
-    public int goldYeild = 0;
-    public int lootChance = 0;
+    int expYield = 0;
+    int goldYeild = 0;
+    private int lootChance = 0;
 
-    public Monster(String name, int level, int expYield, int goldYield, int lootChance) {
+    Monster(String name, int level, int expYield, int goldYield, int lootChance) {
         this.name = name;
         rollAllStats();
 

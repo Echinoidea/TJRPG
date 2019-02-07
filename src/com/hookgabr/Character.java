@@ -10,29 +10,29 @@ public abstract class Character {
 
     public boolean canFight = false;
 
-    public int level = 1;
+    int level = 1;
 
-    public Stat statStr = new Stat("Strength", 1);
-    public Stat statWis = new Stat("Wisdom", 1);
-    public Stat statEnd = new Stat("Endurance", 1);
-    public Stat statDex = new Stat("Dexterity", 1);
-    public Stat statLuc = new Stat("Luck", 1);
+    Stat statStr = new Stat("Strength", 1);
+    Stat statWis = new Stat("Wisdom", 1);
+    Stat statEnd = new Stat("Endurance", 1);
+    Stat statDex = new Stat("Dexterity", 1);
+    Stat statLuc = new Stat("Luck", 1);
 
-    public Stat statHp = new Stat("HP", 1);
-    public Stat statMp = new Stat("MP", 1);
+    Stat statHp = new Stat("HP", 1);
+    Stat statMp = new Stat("MP", 1);
 
-    public Stat statBaseAttack = new Stat("Base Attack", 0);
-    public Stat statBaseDefense = new Stat("Base Defense", 0);
-    public Stat statAttack = new Stat("Attack", 0);
-    public Stat statDefense = new Stat("Defense", 0);
+    Stat statBaseAttack = new Stat("Base Attack", 0);
+    Stat statBaseDefense = new Stat("Base Defense", 0);
+    Stat statAttack = new Stat("Attack", 0);
+    Stat statDefense = new Stat("Defense", 0);
 
-    public Stat statDodge = new Stat("Dodge Chance", 0);
-    public Stat statCritical = new Stat("Critical Hit Chance", 0);
+    private Stat statDodge = new Stat("Dodge Chance", 0);
+    private Stat statCritical = new Stat("Critical Hit Chance", 0);
 
-    public Weapon equippedWeapon = new Weapon("fists", 0, 1);
-    public Armor equippedArmor = new Armor("unarmored", 0, 0);
+    Weapon equippedWeapon = new Weapon("fists", 0, 1);
+    Armor equippedArmor = new Armor("unarmored", 0, 0);
 
-    public List<Spell> spellList = new ArrayList<Spell>();
+    List<Spell> spellList = new ArrayList<Spell>();
 
     void rollAllStats() {
         Random r = new Random();
@@ -135,16 +135,16 @@ public abstract class Character {
 
     void printStats() {
         System.out.printf("\n%s's Stats:\n--------------------\nLevel: %d\nHP: %d\nMP: %d\nStrength: %d\nWisdom:" +
-                        " %d\nEndurance: %d\nDexterity: %d\nLuck: %d\nAttack: %d\nDefense: %d\n--------------------\n",
+                        " %d\nEndurance: %d\nDexterity: %d\nLuck: %d\nAttack: %d\nDefense: %d\n--------------------",
                 name, level, statHp.val, statMp.val, statStr.val, statWis.val,
                 statEnd.val, statDex.val, statLuc.val, statAttack.val, statDefense.val);
     }
 
-    public boolean canCast(Spell spell) {
+    private boolean canCast(Spell spell) {
         return statMp.val >= spell.mpCost;
     }
 
-    public boolean isDead() {
+    boolean isDead() {
         return statHp.val <= 0;
     }
 }

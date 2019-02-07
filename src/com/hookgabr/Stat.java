@@ -6,11 +6,11 @@ public class Stat {
 
     // Variable declaration
 
-    public String name = null;
-    public int max = 0;
-    public int val = 0;
+    public String name;
+    int max = 0;
+    int val;
 
-    public void addVal() {
+    void addVal() {
         Random rand = new Random();
         int rVal = rand.nextInt(5) + 2;
         if (this.val + rVal > 100) {
@@ -21,25 +21,12 @@ public class Stat {
         }
     }
 
-    // Constructors
-
-    /**
-     * Default constructor
-     */
-    public Stat() { }
-
-    public Stat(String name, int max, int val) {
-        this.name = name;
-        this.max = max;
-        this.val = val;
-    }
-
     /**
      * Constructor
      * @param name The name of this Stat
      * @param val The current value of this Stat
      */
-    public Stat(String name, int val) {
+    Stat(String name, int val) {
         this.name = name;
         this.val = val < max ? val : max;
     }

@@ -2,7 +2,7 @@ package com.hookgabr;
 
 import java.util.*;
 
-public class Battle {
+class Battle {
 
     private Player player;
     private Monster monster;
@@ -11,7 +11,7 @@ public class Battle {
         this.player = player;
         this.monster = monster;
 
-        Game.slowPrint("\n> Battle started between " + player.name + " and " + monster.name + "!");
+        System.out.println("\n> Battle started between " + player.name + " and " + monster.name + "!");
 
         startBattleLoop();
     }
@@ -19,9 +19,8 @@ public class Battle {
     private boolean isRunning = true;
 
     private void startBattleLoop() {
-        boolean isPlayerTurn = true;
+        boolean isPlayerTurn;
         Scanner scan = new Scanner(System.in);
-        //Random r = new Random();
 
         isRunning = !player.isDead() && !monster.isDead();
         isPlayerTurn = player.statDex.val > monster.statDex.val;
@@ -82,7 +81,7 @@ public class Battle {
                 if (!monster.isDead()) {
                     System.out.println("\n> " + monster.name + "'s turn.");
                     monsterAttack();
-                    System.out.println("\n> Press Enter");
+                    System.out.print("\n> Press Enter");
                     scan.nextLine();
                     isPlayerTurn = true;
                 } else {
@@ -103,35 +102,25 @@ public class Battle {
     }
 
     private HealingSpell checkForHealingSpell(List<Spell> spellList) {
-        boolean containsHealingSpell = false;
         HealingSpell hSpell = null;
         if (!spellList.isEmpty()) {
             for (Spell s : spellList) {
                 if (s instanceof HealingSpell) {
-                    containsHealingSpell = true;
                     hSpell = (HealingSpell) s;
                 }
             }
-        }
-        else {
-            containsHealingSpell = false;
         }
         return hSpell;
     }
 
     private DamageSpell checkForDamageSpell(List<Spell> spellList) {
-        boolean containsDamageSpell = false;
         DamageSpell dSpell = null;
         if (!spellList.isEmpty()) {
             for (Spell s : spellList) {
                 if (s instanceof DamageSpell) {
-                    containsDamageSpell = true;
                     dSpell = (DamageSpell) s;
                 }
             }
-        }
-        else {
-            containsDamageSpell = false;
         }
         return dSpell;
     }
@@ -143,21 +132,19 @@ public class Battle {
         if (!monster.isDead()) {
             if (rNum >= 50) {
                 if (monster.statHp.val < monster.statHp.val / 2 && monster.spellList.contains(checkForHealingSpell(monster.spellList))) {
-                    HealingSpell hSpell;
                     System.out.println("\n> " + monster.name + " casts " + checkForHealingSpell(monster.spellList).name + "!");
                     monster.castHealingSpell(checkForHealingSpell(monster.spellList), monster);
                 }
                 else if (monster.spellList.contains(checkForDamageSpell(monster.spellList))) {
-                    HealingSpell dSpell;
                     System.out.println("\n> " + monster.name + " casts " + checkForDamageSpell(monster.spellList).name + "!");
-                    monster.castDamageSpell(checkForDamageSpell(monster.spellList), monster);
+                    monster.castDamageSpell(checkForDamageSpell(monster.spellList), player);
                 }
             }
-
-            if (player.level > monster.level + 5 && rNum >= 40) {
+            else if (player.level > monster.level + 5 && rNum >= 40) {
                 System.out.println("\n> " + monster.name + "fled!");
                 isRunning = false;
-            } else {
+            }
+            else {
                 monster.attack(player);
                 isRunning = !player.isDead() && !monster.isDead();
             }
@@ -175,23 +162,22 @@ public class Battle {
         if (player.canLevelUp()) {
             player.levelUp();
             System.out.println("\n> You leveled up!");
-            player.printStats();
+            printNewStats();
         }
         System.out.printf("\n> You earned %d EXP and found %d gold!", monster.expYield, monster.goldYeild);
-
-        /*Random r = new Random();
-        int rNum = r.nextInt(100);
-        if (rNum >= monster.lootChance) {
-            // TODO: Give leveled item?
-        }
-        */
-        // Return to the Arena
     }
 
     private void loseBattle() {
         System.out.println("\n> You were defeated and lost half of your gold.");
         player.gold -= player.gold / 2;
         // Return to the Arena
+    }
+
+    private void printNewStats() {
+        System.out.printf("\n%s's New Stats:\n--------------------\nLevel: %d\nHP: %d\nMP: %d\nStrength: %d\nWisdom:" +
+                        " %d\nEndurance: %d\nDexterity: %d\nLuck: %d\nAttack: %d\nDefense: %d\n--------------------",
+                player.name, player.level, player.statHp.val, player.statMp.val, player.statStr.val, player.statWis.val,
+                player.statEnd.val, player.statDex.val, player.statLuc.val, player.statAttack.val, player.statDefense.val);
     }
 }
 // TODO: Game over stuff
