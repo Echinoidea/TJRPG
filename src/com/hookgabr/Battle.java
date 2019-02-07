@@ -1,6 +1,13 @@
 package com.hookgabr;
 
 import java.util.*;
+import java.io.File;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 
 class Battle {
 
@@ -17,6 +24,52 @@ class Battle {
     }
 
     private boolean isRunning = true;
+
+    public static void getQueuedMonster() {
+        try {
+            File inputFile = new File("C:\\GabrielHooks\\_repos\\TextJrpg\\src\\com\\hookgabr\\Monsters.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            NodeList nList = doc.getElementsByTagName("monster");
+            System.out.println("----------------------------");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    System.out.println("Monster ID : "
+                            + eElement.getAttribute("id"));
+                    System.out.println("Name : "
+                            + eElement
+                            .getElementsByTagName("name")
+                            .item(0)
+                            .getTextContent());
+                    System.out.println("Level : "
+                            + eElement
+                            .getElementsByTagName("level")
+                            .item(0)
+                            .getTextContent());
+                    System.out.println("Exp Yield : "
+                            + eElement
+                            .getElementsByTagName("exp-yield")
+                            .item(0)
+                            .getTextContent());
+                    System.out.println("Gold Yield : "
+                            + eElement
+                            .getElementsByTagName("gold-yield")
+                            .item(0)
+                            .getTextContent());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void startBattleLoop() {
         boolean isPlayerTurn;
@@ -180,5 +233,3 @@ class Battle {
                 player.statEnd.val, player.statDex.val, player.statLuc.val, player.statAttack.val, player.statDefense.val);
     }
 }
-// TODO: Game over stuff
-// TODO: Continue to "arena" after battle

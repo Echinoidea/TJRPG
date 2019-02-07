@@ -1,0 +1,33 @@
+<?xml version = "1.0"?>
+<class>
+    <monster id="00">
+        <name>Slime</name>
+        <level>1</level>
+        <exp-yield>5</exp-yield>
+        <gold-yield>2</gold-yield>
+    </monster>
+    <monster id="01">
+        <name>Ghost</name>
+        <level>2</level>
+        <exp-yield>9</exp-yield>
+        <gold-yield>7</gold-yield>
+    </monster>
+    <monster id="03">
+        <name>Ghoul</name>
+        <level>3</level>
+        <exp-yield>13</exp-yield>
+        <gold-yield>10</gold-yield>
+    </monster>
+    <monster id="04">
+        <name>Skeleton</name>
+        <level>4</level>
+        <exp-yield>17</exp-yield>
+        <gold-yield>20</gold-yield>
+    </monster>
+    <monster id="05">
+        <name>Scorpion</name>
+        <level>5</level>
+        <exp-yield>29</exp-yield>
+        <gold-yield>18</gold-yield>
+    </monster>
+</class>

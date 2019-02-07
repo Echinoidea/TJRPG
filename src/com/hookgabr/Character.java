@@ -49,7 +49,7 @@ public abstract class Character {
         statDex.val = statDex.max;
         statLuc.val = statLuc.max;
 
-        statHp.max = (int)(statEnd.val * 1.5 + r.nextInt(5));
+        statHp.max = (int) (statEnd.val * 1.5 + r.nextInt(5));
         statMp.max = statWis.val / 2 + r.nextInt(3);
 
         statHp.val = statHp.max;
@@ -65,8 +65,8 @@ public abstract class Character {
         statAttack.val = statBaseAttack.max + equippedWeapon.damageRating;
         statDefense.val = statBaseDefense.max + equippedArmor.defenseRating;
 
-        statDodge.max = (int)Math.pow(statDex.val, (float)statDex.val / 40);
-        statCritical.max = (int)Math.pow(statLuc.val, (float)statLuc.val / 40);
+        statDodge.max = (int) Math.pow(statDex.val, (float) statDex.val / 40);
+        statCritical.max = (int) Math.pow(statLuc.val, (float) statLuc.val / 40);
 
         statDodge.val = statDodge.max;
         statCritical.val = statCritical.max;
@@ -83,7 +83,7 @@ public abstract class Character {
         statLuc.addVal();
 
         statHp.max = statEnd.val * 2 + rand.nextInt(5);
-        statMp.max = (int)(statWis.val * 1.5 + rand.nextInt(3));
+        statMp.max = (int) (statWis.val * 1.5 + rand.nextInt(3));
 
         statBaseAttack.max = statStr.val / 2 + 1;
         statBaseDefense.max = statDex.val / 4 + 1;

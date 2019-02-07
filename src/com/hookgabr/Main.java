@@ -9,6 +9,7 @@ public class Main {
      * This method is where everything is executed when the program is ran.
      */
     public static void main(String[] args) {
+        /*
         Player hero1 = new Player("Hero 1", 5);
         Weapon sword = new Weapon("sword", 10, 4);
         Armor iron = new Armor("iron armor", 10, 2);
@@ -23,6 +24,8 @@ public class Main {
         Monster slime = new Monster("Slime", 3, 3, 2, 5);
         slime.spellList.add(fireball);
         Battle battle = new Battle(hero1, slime);
+        */
+        Battle.getQueuedMonster();
     }
 }
 // TODO: Create Item, Weapon, and Armor class and implement to Character.
