@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.File;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -12,20 +13,17 @@ import org.w3c.dom.Element;
 class Battle {
 
     private Player player;
-    private Monster monster;
+    private Monster monster = new Monster();
 
-    Battle(Player player, Monster monster) {
+    Battle(Player player) {
+        getLeveledMonster();
         this.player = player;
-        this.monster = monster;
-
-        System.out.println("\n> Battle started between " + player.name + " and " + monster.name + "!");
-
-        startBattleLoop();
+        this.player.healFull();
     }
 
     private boolean isRunning = true;
 
-    public static void getQueuedMonster() {
+    public static void getMonsterXml() {
         try {
             File inputFile = new File("C:\\GabrielHooks\\_repos\\TextJrpg\\src\\com\\hookgabr\\Monsters.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -71,9 +69,52 @@ class Battle {
         }
     }
 
-    private void startBattleLoop() {
+    private Queue<Monster> monsterQueue = new LinkedList<>();
+
+    public void getLeveledMonster() {
+        //Monster monster;
+        try {
+            File inputFile = new File("C:\\GabrielHooks\\_repos\\TextJrpg\\src\\com\\hookgabr\\Monsters.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            System.out.println("\nRoot element :" + doc.getDocumentElement().getNodeName());
+            NodeList nList = doc.getElementsByTagName("monster");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    System.out.println("Monster ID : " + eElement.getAttribute("id"));
+                    System.out.println("Name : " + eElement.getElementsByTagName("name").item(0).getTextContent());
+                    System.out.println("Level : " + eElement.getElementsByTagName("level").item(0).getTextContent());
+                    System.out.println("Exp Yield : " + eElement.getElementsByTagName("exp-yield").item(0).getTextContent());
+                    System.out.println("Gold Yield : " + eElement.getElementsByTagName("gold-yield").item(0).getTextContent());
+
+                    String monsterName = eElement.getElementsByTagName("name").item(0).getTextContent();
+                    int monsterLevel = Integer.parseInt(eElement.getElementsByTagName("level").item(0).getTextContent());
+                    int monsterExp = Integer.parseInt(eElement.getElementsByTagName("exp-yield").item(0).getTextContent());
+                    int monsterGold = Integer.parseInt(eElement.getElementsByTagName("gold-yield").item(0).getTextContent());
+
+                    monsterQueue.add(new Monster(monsterName, monsterLevel, monsterExp, monsterGold));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startBattleLoop() {
         boolean isPlayerTurn;
         Scanner scan = new Scanner(System.in);
+
+        getLeveledMonster();
+        Monster monster = monsterQueue.remove();
+
+        System.out.println("\n> Battle started between " + player.name + " and " + monster.name + "!");
 
         isRunning = !player.isDead() && !monster.isDead();
         isPlayerTurn = player.statDex.val > monster.statDex.val;
@@ -85,52 +126,56 @@ class Battle {
                 displayBattleMenu();
                 System.out.print("> ");
 
-                String input = scan.nextLine();
-                switch (input.toUpperCase()) {
-                    case "1":
-                        player.attack(monster);
-                        if (monster.isDead()) {
-                            defeatMonster();
-                        }
-                        break;
-                    case "MELEE":
-                        player.attack(monster);
-                        if (monster.isDead()) {
-                            defeatMonster();
-                        }
-                        break;
-                    case "2":
-                        player.printSpellList();
-                        break;
-                    case "SPELLS":
-                        player.printSpellList();
-                        break;
-                    case "3":
-                        player.printItemList();
-                        break;
-                    case "ITEMS":
-                        player.printItemList();
-                        break;
-                    case "4":
-                        if (player.statDex.max > monster.statDex.max) {
-                            isRunning = false;
+                try {
+                    String input = scan.nextLine();
+                    switch (input.toUpperCase()) {
+                        case "1":
+                            player.attack(monster);
+                            if (monster.isDead()) {
+                                defeatMonster();
+                            }
                             break;
-                        }
-                        break;
-                    case "FLEE":
-                        if (player.statDex.max > monster.statDex.max) {
-                            isRunning = false;
+                        case "MELEE":
+                            player.attack(monster);
+                            if (monster.isDead()) {
+                                defeatMonster();
+                            }
                             break;
-                        }
-                        break;
-                    default:
-                        System.out.println("\n> INVALID INPUT");
-                        continue;
+                        case "2":
+                            player.printSpellList();
+                            break;
+                        case "SPELLS":
+                            player.printSpellList();
+                            break;
+                        case "3":
+                            player.printItemList();
+                            break;
+                        case "ITEMS":
+                            player.printItemList();
+                            break;
+                        case "4":
+                            if (player.statDex.max > monster.statDex.max) {
+                                isRunning = false;
+                                break;
+                            }
+                            break;
+                        case "FLEE":
+                            if (player.statDex.max > monster.statDex.max) {
+                                isRunning = false;
+                                break;
+                            }
+                            break;
+                        default:
+                            System.out.println("\n> INVALID INPUT");
+                            continue;
+                    }
+                }
+                catch (NoSuchElementException e) {
+                    e.printStackTrace();
                 }
 
                 isPlayerTurn = false;
-            }
-            else {
+            } else {
                 if (!monster.isDead()) {
                     System.out.println("\n> " + monster.name + "'s turn.");
                     monsterAttack();
@@ -187,17 +232,14 @@ class Battle {
                 if (monster.statHp.val < monster.statHp.val / 2 && monster.spellList.contains(checkForHealingSpell(monster.spellList))) {
                     System.out.println("\n> " + monster.name + " casts " + checkForHealingSpell(monster.spellList).name + "!");
                     monster.castHealingSpell(checkForHealingSpell(monster.spellList), monster);
-                }
-                else if (monster.spellList.contains(checkForDamageSpell(monster.spellList))) {
+                } else if (monster.spellList.contains(checkForDamageSpell(monster.spellList))) {
                     System.out.println("\n> " + monster.name + " casts " + checkForDamageSpell(monster.spellList).name + "!");
                     monster.castDamageSpell(checkForDamageSpell(monster.spellList), player);
                 }
-            }
-            else if (player.level > monster.level + 5 && rNum >= 40) {
+            } else if (player.level > monster.level + 5 && rNum >= 40) {
                 System.out.println("\n> " + monster.name + "fled!");
                 isRunning = false;
-            }
-            else {
+            } else {
                 monster.attack(player);
                 isRunning = !player.isDead() && !monster.isDead();
             }

@@ -5,9 +5,6 @@ package com.hookgabr;
  */
 public class Main {
 
-    /**
-     * This method is where everything is executed when the program is ran.
-     */
     public static void main(String[] args) {
         /*
         Player hero1 = new Player("Hero 1", 5);
@@ -25,9 +22,13 @@ public class Main {
         slime.spellList.add(fireball);
         Battle battle = new Battle(hero1, slime);
         */
-        Battle.getQueuedMonster();
+        Player player = new Player("Hero", 1);
+        Battle battle = new Battle(player);
+        battle.startBattleLoop();
+
     }
 }
+
 // TODO: Create Item, Weapon, and Armor class and implement to Character.
 // TODO: Create Spell class and implement to Character.
 // TODO: Create Battle class.

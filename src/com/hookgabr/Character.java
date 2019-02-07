@@ -8,8 +8,6 @@ public abstract class Character {
 
     public String name = null;
 
-    public boolean canFight = false;
-
     int level = 1;
 
     Stat statStr = new Stat("Strength", 1);
