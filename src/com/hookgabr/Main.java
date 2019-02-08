@@ -22,10 +22,11 @@ public class Main {
         slime.spellList.add(fireball);
         Battle battle = new Battle(hero1, slime);
         */
+        /*
         Player player = new Player("Hero", 1);
         Battle battle = new Battle(player);
         battle.startBattleLoop();
-
+        */
     }
 }
 

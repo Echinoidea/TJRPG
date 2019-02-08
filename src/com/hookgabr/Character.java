@@ -8,7 +8,7 @@ public abstract class Character {
 
     public String name = null;
 
-    int level = 1;
+    public static int level = 1;
 
     Stat statStr = new Stat("Strength", 1);
     Stat statWis = new Stat("Wisdom", 1);

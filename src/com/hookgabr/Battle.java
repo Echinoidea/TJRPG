@@ -23,96 +23,16 @@ class Battle {
 
     private boolean isRunning = true;
 
-    public static void getMonsterXml() {
-        try {
-            File inputFile = new File("C:\\GabrielHooks\\_repos\\TextJrpg\\src\\com\\hookgabr\\Monsters.xml");
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
-            doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-            NodeList nList = doc.getElementsByTagName("monster");
-            System.out.println("----------------------------");
+    // Contains monsters from Monsters.xml with levels corresponding to the Player.
+    private List<Monster> monsterLeveledList = new ArrayList<>();
 
-            for (int i = 0; i < nList.getLength(); i++) {
-                Node nNode = nList.item(i);
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+    private void getLeveledMonster() {
 
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
-                    System.out.println("Monster ID : "
-                            + eElement.getAttribute("id"));
-                    System.out.println("Name : "
-                            + eElement
-                            .getElementsByTagName("name")
-                            .item(0)
-                            .getTextContent());
-                    System.out.println("Level : "
-                            + eElement
-                            .getElementsByTagName("level")
-                            .item(0)
-                            .getTextContent());
-                    System.out.println("Exp Yield : "
-                            + eElement
-                            .getElementsByTagName("exp-yield")
-                            .item(0)
-                            .getTextContent());
-                    System.out.println("Gold Yield : "
-                            + eElement
-                            .getElementsByTagName("gold-yield")
-                            .item(0)
-                            .getTextContent());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Queue<Monster> monsterQueue = new LinkedList<>();
-
-    public void getLeveledMonster() {
-        //Monster monster;
-        try {
-            File inputFile = new File("C:\\GabrielHooks\\_repos\\TextJrpg\\src\\com\\hookgabr\\Monsters.xml");
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
-            doc.getDocumentElement().normalize();
-            System.out.println("\nRoot element :" + doc.getDocumentElement().getNodeName());
-            NodeList nList = doc.getElementsByTagName("monster");
-
-            for (int i = 0; i < nList.getLength(); i++) {
-                Node nNode = nList.item(i);
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
-                    System.out.println("Monster ID : " + eElement.getAttribute("id"));
-                    System.out.println("Name : " + eElement.getElementsByTagName("name").item(0).getTextContent());
-                    System.out.println("Level : " + eElement.getElementsByTagName("level").item(0).getTextContent());
-                    System.out.println("Exp Yield : " + eElement.getElementsByTagName("exp-yield").item(0).getTextContent());
-                    System.out.println("Gold Yield : " + eElement.getElementsByTagName("gold-yield").item(0).getTextContent());
-
-                    String monsterName = eElement.getElementsByTagName("name").item(0).getTextContent();
-                    int monsterLevel = Integer.parseInt(eElement.getElementsByTagName("level").item(0).getTextContent());
-                    int monsterExp = Integer.parseInt(eElement.getElementsByTagName("exp-yield").item(0).getTextContent());
-                    int monsterGold = Integer.parseInt(eElement.getElementsByTagName("gold-yield").item(0).getTextContent());
-
-                    monsterQueue.add(new Monster(monsterName, monsterLevel, monsterExp, monsterGold));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void startBattleLoop() {
         boolean isPlayerTurn;
         Scanner scan = new Scanner(System.in);
-
-        getLeveledMonster();
-        Monster monster = monsterQueue.remove();
 
         System.out.println("\n> Battle started between " + player.name + " and " + monster.name + "!");
 

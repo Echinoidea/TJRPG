@@ -2,7 +2,7 @@ package com.hookgabr;
 
 import java.util.*;
 
-public class Player extends Character {
+public abstract class Player extends Character {
 
     int exp = 0;
     private int expToLevel = 0;
